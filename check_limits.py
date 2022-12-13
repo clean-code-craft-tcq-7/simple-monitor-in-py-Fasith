@@ -1,18 +1,23 @@
+from check_limits_constants import ideal_state_of_charge_range, ideal_temperature_range, maximum_charge_rate
+
+
+def check_within_of_range(value, lower_bound, upper_bound):
+    if value < lower_bound or value > upper_bound:
+        return False
+    return True
+
 
 def battery_is_ok(temperature, soc, charge_rate):
-  if temperature < 0 or temperature > 45:
-    print('Temperature is out of range!')
-    return False
-  elif soc < 20 or soc > 80:
-    print('State of Charge is out of range!')
-    return False
-  elif charge_rate > 0.8:
-    print('Charge rate is out of range!')
-    return False
+    if not check_within_of_range(temperature, *ideal_temperature_range):
+        return False
+    if not check_within_of_range(soc, *ideal_state_of_charge_range):
+        return False
+    if charge_rate > maximum_charge_rate:
+        return False
+    return True
 
-  return True
 
 
 if __name__ == '__main__':
-  assert(battery_is_ok(25, 70, 0.7) is True)
-  assert(battery_is_ok(50, 85, 0) is False)
+    assert (battery_is_ok(25, 70, 0.7) is True)
+    assert (battery_is_ok(50, 85, 0) is False)
