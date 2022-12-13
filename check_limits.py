@@ -10,27 +10,21 @@ def check_battery_status(values, ranges):
     status = True
     for _value, _range in zip(values, ranges):
         if not check_within_range(_value, *_range):
-            status = False
+            return False
     return status
 
 
 def battery_is_ok(temperature, soc, charge_rate):
     values = [temperature, soc, charge_rate]
-    ranges = [ideal_temperature_range,
+    ranges = [
+                ideal_temperature_range,
                 ideal_state_of_charge_range,
-                (0, maximum_charge_rate)]
+                (0, maximum_charge_rate)
+            ]
+
     if check_battery_status(values, ranges):
         return True
     return False
-
-# def battery_is_ok(temperature, soc, charge_rate):
-#     if not check_within_range(temperature, *ideal_temperature_range):
-#         return False
-#     if not check_within_range(soc, *ideal_state_of_charge_range):
-#         return False
-#     if charge_rate > maximum_charge_rate:
-#         return False
-#     return True
 
 
 if __name__ == '__main__':
