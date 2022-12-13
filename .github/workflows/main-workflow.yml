@@ -29,3 +29,6 @@ jobs:
         flake8 . --count --exit-zero --max-line-length=80 --ignore=E111,E121,E126 --statistics
     - name: Run
       run: python check_limits.py
+
+    - name: test check_limits
+      run: pytest Test/test_check_limits.py
