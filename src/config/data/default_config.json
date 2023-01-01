@@ -1,0 +1,30 @@
+{
+    "data_manager": {
+        "temperature_unit": "celcius",
+        "state_of_charge_unit": "percentage",
+        "charge_rate_unit": "C"
+    },
+    "logger": {
+        "language": "german"
+    },
+    "triggers": {
+        "temperature": {
+            "minimum_value": 0,
+            "maximum_value": 45,
+            "early_warning_enabled": true,
+            "early_warning_tolerance_percentage": 5
+        },
+        "state_of_charge": {
+            "minimum_value": 20,
+            "maximum_value": 80,
+            "early_warning_enabled": true,
+            "early_warning_tolerance_percentage": 5
+        },
+        "charge_rate": {
+            "minimum_value": 0,
+            "maximum_value": 0.8,
+            "early_warning_enabled": true,
+            "early_warning_tolerance_percentage": 5
+        }
+    }
+}
