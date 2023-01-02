@@ -37,14 +37,7 @@ class BatteryManagmentSystem():
         for trigger in self.triggers:
             value = values[trigger.parameter]
             self._check_trigger(value, trigger)
-
-            # breach_info = trigger.check_for_breach(value)
-            # if breach_info["is_breach"]:
-            #     self.logger.log_breach(value, trigger, breach_info["condition"])
-
-            # warning_info = trigger.check_for_warning(value)
-            # if warning_info["is_warning"]:
-            #     self.logger.log_warning(value, trigger, warning_info["condition"])          
+         
 
 
 if __name__ == "__main__":
