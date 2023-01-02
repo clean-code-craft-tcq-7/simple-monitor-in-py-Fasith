@@ -34,6 +34,7 @@ class BatteryManagmentSystem():
 
 
 if __name__ == "__main__":
-    bms = BatteryManagmentSystem("./config/data/default_config.json")
+    print("dd")
+    bms = BatteryManagmentSystem("./src/config/data/default_config.json")
     bms.set_values(100,21,0.70)
     bms.check_battery_status()
