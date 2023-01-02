@@ -7,40 +7,65 @@ class WarningTrigger():
         self.tolerance = trigger_config["tolerance"] * (self.max_val - self.min_val)/100
 
 
-    def check_for_breach(self,value):
-        is_breach = False
+    def _check_if_outside_limits(self,value, lower_bound , upper_bound):
+        is_outside_limits = False
         condition = None
-
-        if value > self.max_val:
-            is_breach = True
+        if value > upper_bound:
+            is_outside_limits = True
             condition = "High"
-
-        if value < self.min_val:
-            is_breach = True
+        
+        if value < lower_bound:
+            is_outside_limits = True
             condition = "Low"
 
         return {
-            "is_breach" : is_breach,
-            "condition" : condition
+            "is_outside_limits" : is_outside_limits,
+            "condition": condition
+        }
+
+
+    def check_for_breach(self,value):
+        
+        breach_status = self._check_if_outside_limits(value, self.min_val, self.max_val)
+        return {
+            "is_breach" : breach_status["is_outside_limits"],
+            "condition" : breach_status["condition"]
         }
 
 
     def check_for_warning(self,value):
-        is_warning = False
-        condition = None
+        warning_status = self._check_if_outside_limits(value, self.min_val + self.tolerance, self.max_val - self.tolerance)
 
-        if value > self.max_val - self.tolerance and value <= self.max_val:
-            is_warning = True
-            condition = "High"
-
-        if value < self.min_val + self.tolerance and value >= self.min_val:
-            is_warning = True
-            condition = "Low"
+        if  warning_status["is_outside_limits"]:            
+            is_breach = self.check_for_breach(value)["is_breach"]
+            if not is_breach:
+                return {
+                    "is_warning" : warning_status["is_outside_limits"],
+                    "condition" : warning_status["condition"]
+                }
 
         return {
-            "is_warning" : is_warning,
-            "condition" : condition
+            "is_warning" : False,
+            "condition" : None
         }
+
+
+        
+
+
+
+        # if value > self.max_val - self.tolerance and value <= self.max_val:
+        #     is_warning = True
+        #     condition = "High"
+
+        # if value < self.min_val + self.tolerance and value >= self.min_val:
+        #     is_warning = True
+        #     condition = "Low"
+
+        # return {
+        #     "is_warning" : is_warning,
+        #     "condition" : condition
+        # }
 
 
     # def should_trigger_warning(self, value):

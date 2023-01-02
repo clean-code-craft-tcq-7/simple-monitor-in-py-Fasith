@@ -19,22 +19,35 @@ class BatteryManagmentSystem():
     def set_values(self,*args, **kwargs):
         self.data_manager.set_values(*args, **kwargs)
 
+
+    def _check_trigger(self,value,trigger):
+    
+        breach_info = trigger.check_for_breach(value)
+        if breach_info["is_breach"]:
+            self.logger.log_breach(value, trigger, breach_info["condition"])
+
+        warning_info = trigger.check_for_warning(value)
+        if warning_info["is_warning"]:
+            self.logger.log_warning(value, trigger, warning_info["condition"])
+
+
+
     def check_battery_status(self):
         values = self.data_manager.get_values()
         for trigger in self.triggers:
             value = values[trigger.parameter]
+            self._check_trigger(value, trigger)
 
-            breach_info = trigger.check_for_breach(value)
-            if breach_info["is_breach"]:
-                self.logger.log_breach(value, trigger, breach_info["condition"])
+            # breach_info = trigger.check_for_breach(value)
+            # if breach_info["is_breach"]:
+            #     self.logger.log_breach(value, trigger, breach_info["condition"])
 
-            warning_info = trigger.check_for_warning(value)
-            if warning_info["is_warning"]:
-                self.logger.log_warning(value, trigger, warning_info["condition"])          
+            # warning_info = trigger.check_for_warning(value)
+            # if warning_info["is_warning"]:
+            #     self.logger.log_warning(value, trigger, warning_info["condition"])          
 
 
 if __name__ == "__main__":
-    print("dd")
     bms = BatteryManagmentSystem("./src/config/data/default_config.json")
     bms.set_values(100,21,0.70)
     bms.check_battery_status()
